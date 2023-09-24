@@ -1,26 +1,42 @@
-#  Как работать с репозиторием финального задания
+# kittygram_final
 
-## Что нужно сделать
+Файл стоит оформить следующим образом:
+1. приложить бейдж со статусом пайплайна
+3. инструкция по разворачиванию
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+## Описание
+Сервис kittygram, представляющий из себя социальную сеть для того, чтобы делиться котиками и их достижениями с другими пользователями. Есть система регистрации.
 
-## Как проверить работу с помощью автотестов
+## Инструкция по разворачиванию
+1. Склонируйте репозиторий с помощью git clone https://github.com/Ushanov-Ilya/infra_sprint1.git
+2. Измените файл конфигурации nginx /etc/nginx/sites-enabled/default на пример из /infra/default
+3. Создайте файл конфигурации gunicorn /etc/systemd/system/gunicorn.service по примеру из /infra/gunicorn_kittygram.service, исправив доменное имя на свое
+4. Создайте и заполните виртуальное оуружение:
+- `python3 -m venv venv`
+- `source venv/bin/activate`
+- `pip install -r requirements.txt`
+- `pip install gunicorn==20.1.0`
+5. Создайте файл .env со следующими ключами:
+- SECRET_KEY - секретный ключ джанго
+- DEBUG - режим разработки True/False
+- ALLOWED_HOSTS - список разрешенных хостов через пробел
+- POSTGRES_USER - пользователь бд
+- POSTGRES_PASSWORD - пароль пользователя бд
+- POSTGRES_DB - имя бд
+- DB_HOST - название сервиса базы данных(db)
+- DB_PORT - порт базы данных(5432)
+6. Запустите gunicorn service:
+- `sudo systemctl restart gunicorn`
+7. Соберите статику фронтенда:
+- `npm run build`
+И перенесите статику в папку /var/www/kittygram/
+8. Соберите статику бекэнда:
+- `python manage.py collectstatic`
+И перенесите статику в папку /var/www/kittygram/
+9. Перезапустите nginx:
+- `sudo nginx -t`
+- `sudo systemctl reload nginx`
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
-```
-
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
-
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
-
-## Чек-лист для проверки перед отправкой задания
-
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+## Автор
+Ушанов Илья
+https://github.com/Ushanov-Ilya
