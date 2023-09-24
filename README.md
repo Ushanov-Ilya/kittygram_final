@@ -1,5 +1,6 @@
 # kittygram_final
 
+![CI workflow result](https://github.com/Ushanov-Ilya/kittygram_final/actions/workflows/main.yml/badge.svg)
 Файл стоит оформить следующим образом:
 1. приложить бейдж со статусом пайплайна
 3. инструкция по разворачиванию
