@@ -36,6 +36,39 @@ server {
 - DB_PORT - порт базы данных(5432)
 6. Добавьте изменения в проект, создайте коммит и push, все остальное сделает github workflow
 
+
+## Если Вы не хотите ничего менять:
+1. Зайдите на сервер, где будете разворачивать проект
+2. Настройте nginx на сервере в следующем формате:
+```
+server {
+    ...
+    server_name <ip> <домен>;
+
+    location / {
+        proxy_set_header Host $http_host;
+        proxy_pass http://127.0.0.1:8000;
+    }
+    ...
+}
+```
+3. Склонируйте репозиторий 
+```
+git clone https://github.com/Ushanov-Ilya/kittygram_final.git
+```
+4. Перейдите в папку проекта
+```
+cd kittygram_final
+```
+5. Запустите проект командой
+```
+sudo docker compose -f docker-compose.production.yml up -d
+```
+или такой, если вы хотите собирать образы с нуля:
+```
+docker compose up -d
+```
+
 ## Автор
 Ушанов Илья
 https://github.com/Ushanov-Ilya
